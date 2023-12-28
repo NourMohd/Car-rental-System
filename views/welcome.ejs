@@ -1,4 +1,4 @@
-<%- include("header") %>
+<%- include("headermyreservation") %>
 
 <!-- The cars and their status with reservation option -->
 <div class="carsContainer">
@@ -13,7 +13,7 @@
         <img src="/car_images/<%= car.Model %>.png" alt='<%= car.Model %> image'>
         
         <!-- Display "reserve" button only if the car's status is "active" -->
-        <% if(car.Status === "Active") {%>
+        <% if(car.Status === "Active"||car.Status === "active" ) {%>
             <form class="submit" action="/reservation" method="get">
                 <input type="hidden" name="CarID" value="<%= car.CarID %>">
                 <input type="hidden" name="CustomerID" value="<%= customerDetails.CustomerID %>">
@@ -23,6 +23,15 @@
             <% }else{%>
                 Status : <%= car.Status %>
                <% } %>
+
+                <!-- Office Details Button -->
+        <a href="/office-details?CarID=<%= car.CarID %>" class="button">Office Details</a>
+
+        <!-- History Button -->
+        <a href="/car-history?CarID=<%= car.CarID %>" class="button">History</a>
+
+
+
     </div>
     <% }) %>
 <% } else { %>

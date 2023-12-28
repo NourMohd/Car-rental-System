@@ -106,32 +106,80 @@ app.post('/register', (req, res) => {  // Needed : check for email or pass valid
 });
 
 
+app.get('/myreservations', (req, res) => {
+    const selectedCustomerId = req.session.customer.CustomerID;
+
+    connection.query(
+        'SELECT * FROM reservations WHERE CustomerID = ?',
+        [selectedCustomerId],
+        (err, reservations) => {
+            if (err) {
+                console.error('Error fetching customer reservation details:', err);
+                res.status(500).send('Error fetching customer reservation details');
+                return;
+            }
+
+            // Extract all CarIDs from the reservations to fetch car details
+            const carIds = reservations.map(reservation => reservation.CarID);
+
+            connection.query(
+                'SELECT * FROM cars WHERE CarID IN (?)',
+                [carIds],
+                (err, cars) => {
+                    if (err) {
+                        console.error('Error fetching car details:', err);
+                        res.status(500).send('Error fetching car details');
+                        return;
+                    }
+
+                   
+                    const renders = {
+                        customerDetails: req.session.customer,
+                        reservations: reservations,
+                        cars: cars 
+                    };
+
+                    res.render('myreservations.ejs', renders);
+                }
+            );
+        }
+    );
+});
+
+
+
+
+
+
+
 
 app.get('/reservation', (req, res) => {
     const selectedCarId = req.query.CarID;
     const reservationDate = new Date().toLocaleDateString(); // Assuming it to the current date
 
-            // Fetch car details 
-            connection.query(
-                'SELECT * FROM cars WHERE CarID = ?',
-                [selectedCarId],
-                (err, selectedCar) => {
-                    const car = selectedCar[0];
-                    if (err || selectedCar.length === 0) {
-                        console.error('Error fetching car details:', err);
-                        res.status(500).send('Error fetching car details');
-                        return;
-                    }
-                    req.session.car = car;
-                    const customer = req.session.customer;
-                    const renders = {
-                        customerDetails: customer,
-                        selectedCar: car,
-                        reservationDate: reservationDate
-                    }
-                    res.render('reservation.ejs', renders);
+    // Fetch car and associated office details 
+    connection.query(
+        'SELECT c.*, o.location FROM cars c JOIN offices o ON c.office_id = o.office_id WHERE c.CarID = ?',
+        [selectedCarId],
+        (err, results) => {
+            const selectedCar = results[0];
+            if (err || !selectedCar) {
+                console.error('Error fetching car details:', err);
+                res.status(500).send('Error fetching car details');
+                return;
+            }
 
-                });
+            req.session.car = selectedCar;
+            const customer = req.session.customer;
+            const renders = {
+                customerDetails: customer,
+                selectedCar: selectedCar,
+                reservationDate: reservationDate
+            };
+
+            res.render('reservation.ejs', renders);
+        }
+    );
 });
 
 
@@ -174,6 +222,33 @@ app.post('/reservation', (req, res) => {
                 });
         });
 });
+
+app.get('/office-details', (req, res) => {
+    const carID = req.query.CarID;
+
+    
+    connection.query('SELECT o.location, o.contact_info FROM cars c JOIN offices o ON c.office_id = o.office_id WHERE c.CarID = ?', [carID], (err, results) => {
+        if (err) {
+            console.error('Error fetching office details:', err);
+            res.status(500).send('Error fetching office details');
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('Office details not found');
+            return;
+        }
+
+        const officeDetails = results[0];
+       
+        res.render('office-details.ejs', { officeDetails });
+    });
+});
+
+
+
+
+
 
 app.get('/dashboard', (req, res) => {
     const customer = req.session.customer;

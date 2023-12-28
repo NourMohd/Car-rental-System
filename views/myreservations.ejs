@@ -1,0 +1,26 @@
+<h1>My Reservations</h1>
+
+<% if(reservations && reservations.length > 0) { %>
+    <ul>
+    <% reservations.forEach(reservation => { %>
+        <li>
+            <strong>Reservation Details:</strong><br>
+            Reservation Date: <%= new Date(reservation.ReservationDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
+            Pickup Date: <%= new Date(reservation.PickupDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
+            Return Date: <%= new Date(reservation.ReturnDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
+            
+            <% const carDetail = cars.find(car => car.CarID === reservation.CarID); %>
+            <% if(carDetail) { %>
+                <strong>Car Details:</strong><br>
+                Model: <%= carDetail.Model %> <br>
+                Year: <%= carDetail.Year %> <br>
+                Plate ID: <%= carDetail.PlateID %> <br>
+                Unit Price: <%= carDetail.unitprice %> <br>
+                
+            <% } %>
+        </li>
+    <% }); %>
+    </ul>
+<% } else { %>
+    <p>No reservations found.</p>
+<% } %>
