@@ -1,51 +1,51 @@
-CREATE TABLE Customer (
-    ssn VARCHAR(15) PRIMARY KEY AUTO_INCREMENT,
-    fname VARCHAR(50),
-    lname VARCHAR(50),
-    gender CHAR(1),
-    address VARCHAR(255),
-    phonenumber VARCHAR(15) UNIQUE
+CREATE TABLE Offices (
+    office_id INT AUTO_INCREMENT PRIMARY KEY,
+    location varchar(255) not null,
+     contact_info VARCHAR(255) not null
+
+);
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Address VARCHAR(255),
+    Phone VARCHAR(20) UNIQUE,
+    pass varchar(255),
+    Email VARCHAR(255) UNIQUE
+
+
 );
 
-CREATE TABLE Reservation (
-    Reservation_no INT PRIMARY KEY AUTO_INCREMENT,
-    reserve_date DATE,
-    pickup_date DATE,
-    return_date DATE
+CREATE TABLE Reservations(
+    ReservationID INT AUTO_INCREMENT PRIMARY KEY,
+    ReservationDate DATE,
+    PickupDate DATE,
+    ReturnDate DATE,
+        CustomerID INT,
+
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+
 );
 
-CREATE TABLE Payment (
-    pay_date DATE PRIMARY KEY,
-    Reservation_no INT,
+CREATE TABLE Payments (
+    PaymentDate DATE,
+    ReservationID INT,
     paymethod VARCHAR(50),
-    FOREIGN KEY (Reservation_no) REFERENCES Reservation(Reservation_no),
-    PRIMARY KEY(pay_date,Reservation_no)
+    PRIMARY KEY (ReservationID,PaymentDate),
+    FOREIGN KEY (ReservationID) REFERENCES Reservations(ReservationID)
 );
 
-CREATE TABLE Creditcard (
-    number VARCHAR(16) PRIMARY KEY,
-    holder_name VARCHAR(100),
-    CVV VARCHAR(4),
-    expire_date DATE
-);
 
-CREATE TABLE Car (
-    plate_id VARCHAR(15) PRIMARY KEY,
-    status VARCHAR(15) CHECK (status IN ('active', 'out of service')),
-    year INT,
-    model VARCHAR(50),
-    price_per_day DECIMAL(10, 2),
+CREATE TABLE Cars (
+        CarID INT AUTO_INCREMENT PRIMARY KEY,
+    PlateID VARCHAR(20),
+    Status VARCHAR(20),
+    Year INT,
+    Model VARCHAR(255),
+    unitprice int,
     office_id INT,
-    Reservation_no INT,
-    FOREIGN KEY (office_id) REFERENCES Office(office_id),
-    FOREIGN KEY (Reservation_no) REFERENCES Reservation(Reservation_no)
+    ReservationID INT,
+    FOREIGN KEY (office_id) REFERENCES Offices(office_id),
+    FOREIGN KEY (ReservationID) REFERENCES Reservations(ReservationID)
 );
 
-CREATE TABLE Office (
-    office_id INT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE,
-    phonenumber VARCHAR(15) UNIQUE,
-    region VARCHAR(50),
-    city VARCHAR(50),
-    country VARCHAR(50)
-);
