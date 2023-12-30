@@ -1,7 +1,7 @@
 CREATE TABLE Offices (
     office_id INT AUTO_INCREMENT PRIMARY KEY,
     location varchar(255) not null,
-     contact_info VARCHAR(255) not null
+     contact_info VARCHAR(255) not null
 
 );
 CREATE TABLE Customers (
@@ -11,9 +11,8 @@ CREATE TABLE Customers (
     Address VARCHAR(255),
     Phone VARCHAR(20) UNIQUE,
     pass varchar(255),
-    Email VARCHAR(255) UNIQUE
-
-
+    Email VARCHAR(255) UNIQUE,
+    isAdmin Boolean default false
 );
 
 CREATE TABLE Reservations(
@@ -21,8 +20,10 @@ CREATE TABLE Reservations(
     ReservationDate DATE,
     PickupDate DATE,
     ReturnDate DATE,
-        CustomerID INT,
-
+    CustomerID INT,
+    Status VARCHAR(255),
+    totalprice DECIMAL,
+    payment_method VARCHAR(255) NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 
 );
@@ -49,14 +50,3 @@ CREATE TABLE Cars (
     FOREIGN KEY (ReservationID) REFERENCES Reservations(ReservationID)
 );
 
-<<<<<<< HEAD
-CREATE TABLE Offices (
-    office_id INT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE,
-    phonenumber VARCHAR(15) UNIQUE,
-    region VARCHAR(50),
-    city VARCHAR(50),
-    country VARCHAR(50)
-);
-=======
->>>>>>> 82b314574cea1b7cb5bcc94c7aea70cdea4a5819
