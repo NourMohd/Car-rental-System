@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include("header") %>
 
     <div class="welcomeContainer">
@@ -107,3 +108,98 @@
 
 
 <%- include("footer") %>
+=======
+<%- include("headermyreservation") %>
+<link rel="stylesheet" href="/styles/welcome.css">
+<link rel="stylesheet" href="/css/fontawesome.css">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Center vertically */
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+        width: 220px; /* Decrease box size */
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+    }
+
+    .car-image {
+        height: 150px; /* Adjusted image height */
+        width: auto;
+        object-fit: contain;
+        margin-bottom: 1rem;
+    }
+
+    /* Add color classes for statuses */
+    .bg-success {
+        background-color: #28a745;
+    }
+
+    .bg-danger {
+        background-color: #dc3545;
+    }
+
+    .bg-warning {
+        background-color: #ffc107;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">Office Details</h1>
+            <h1 class="text-center">My Reservations</h1>
+            
+            <div class="card-container">
+                <% if(carsList && carsList.length > 0) { %>
+                <% carsList.forEach((car) => { %>
+                <div class="card <% if(car.Status === 'Active' || car.Status === 'active') { %>bg-success<% } else if(car.Status === 'Inactive' || car.Status === 'inactive') { %>bg-danger<% } else { %>bg-warning<% } %>">
+                    <img src="/car_images/<%= car.Model %>.png" class="card-img-top car-image" alt="<%= car.Model %> image">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= car.Model %></h5>
+                        <p class="card-text">
+                            Status: <%= car.Status %><br>
+                            Year: <%= car.Year %><br>
+                            Plate ID: <%= car.PlateID %><br>
+                            Unit Price: <%= car.unitprice %>$<br>
+                        </p>
+                        <% if(car.Status === "Active" || car.Status === "active") { %>
+                        <form action="/reservation" method="get">
+                            <input type="hidden" name="CarID" value="<%= car.CarID %>">
+                            <input type="hidden" name="CustomerID" value="<%= customerDetails.CustomerID %>">
+                            <button type="submit" class="btn btn-primary">Reserve</button>
+                        </form>
+                        <% } %>
+                        <a href="/office-details?CarID=<%= car.CarID %>" class="btn btn-secondary mt-2">Office Details</a>
+                    </div>
+                </div>
+                <% }); %>
+                <% } else { %>
+                <p class="text-center">No cars available.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("footer") %>
+>>>>>>> e33504008a1d0646be2d376eab918bb14108964b
