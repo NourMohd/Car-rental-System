@@ -33,11 +33,16 @@ connection.connect((err) => {
     }
     console.log('Connected to MySQL as id ' + connection.threadId);
 });
+app.set('view engine', 'ejs');
 
 // get request for home page
 app.get("/", async (req, res) => {
-    res.render("login.ejs");
+    res.render("home.ejs");
 });
+app.get('/login', (req, res) => {
+    res.render('login'); 
+});
+
 
 //Login post request
 app.post('/login', (req, res) => {
@@ -66,12 +71,18 @@ app.post('/login', (req, res) => {
 
             if (passCheck) {
                 req.session.customer = user;
-                res.redirect('/dashboard');
+                if (user.isAdmin) {
+                    req.session.role = 'admin';
+                    res.redirect('/admin-dashboard');
+                } else {
+                    req.session.role = 'customer';
+                    res.redirect('/dashboard');
+                }
                 return;
             } else {
                 res.status(401).send('Invalid username or password');
             }
-
+            
         });
 
 
@@ -101,7 +112,7 @@ app.post('/register', (req, res) => {  // Needed : check for email or pass valid
                 return res.status(500).render('register.ejs', { error: 'Account already exists!' });
             }
             // redirect to login page
-            res.redirect('/');
+            res.redirect('/login');
         });
 });
 
@@ -190,15 +201,16 @@ app.post('/reservation', (req, res) => {
     const selectedCarId = req.session.car.CarID;
     const pickupDate = req.body.pickupDate;
     const returnDate = req.body.returnDate;
-    const status = 'Reserved';
-
-
+    const status = 'reserved';
+    const totalprice=req.body.totalprice;
+    const payment_method=req.body.payment_method;
+    
 
 
     // // Save the reservation to the database
     connection.query(
-        'INSERT INTO Reservations (CustomerID, CarID, ReservationDate, PickupDate, ReturnDate, Status) VALUES (?, ?, CURDATE(), ?, ?, ?)',
-        [selectedCustomerId, selectedCarId, pickupDate, returnDate, status],
+        'INSERT INTO Reservations (CustomerID, CarID, ReservationDate, PickupDate, ReturnDate, Status,totalprice,payment_method) VALUES (?, ?, CURDATE(), ?, ?, ?,?,?)',
+        [selectedCustomerId, selectedCarId, pickupDate, returnDate, status,totalprice,payment_method],
         (err, results) => {
             if (err) {
                 console.error('Error reserving car:', err);
@@ -221,6 +233,13 @@ app.post('/reservation', (req, res) => {
                 });
         });
 });
+
+
+
+
+
+
+
 
 app.get('/office-details', (req, res) => {
     const carID = req.query.CarID;
@@ -304,6 +323,161 @@ app.get('/dashboard', (req, res) => {
             res.render('welcome.ejs', renders);
         });
 });
+
+const isAdmin = (req, res, next) => {
+    if (!req.session || !req.session.role || req.session.role !== 'admin') {
+        return res.status(403).send('Admin access required');
+    }
+    next();
+};
+
+app.get('/admin-dashboard', isAdmin, (req, res) => {
+    connection.query('SELECT * FROM cars', (err, cars) => {
+        if (err) { 
+            res.status(500).send('Error fetching cars');
+            return;
+        }
+
+        const renders = {
+            carsList: cars
+        };
+
+        res.render('admin-dashboard.ejs', renders);  
+    });
+});
+
+
+
+app.post('/update-status', (req, res) => {
+    const carID = req.body.CarID;
+    const newStatus = req.body.status;
+
+    
+    if (newStatus === "reserved") {
+        connection.query(
+            'DELETE FROM reservations WHERE CarID = ?',
+            [carID],
+            (err, results) => {
+                if (err) {
+                    console.error('Error removing reservation:', err);
+                    res.status(500).send('Error updating status');
+                    return;
+                }
+                
+                updateCarStatus(res, carID, newStatus);
+            }
+        );
+    } else {
+        
+        updateCarStatus(res, carID, newStatus);
+    }
+});
+
+
+
+
+
+
+
+function updateCarStatus(res, carID, newStatus) {
+    connection.query(
+        'UPDATE cars SET Status = ? WHERE CarID = ?',
+        [newStatus, carID],
+        (err) => {
+            if (err) {
+                console.error('Error updating car status:', err);
+                res.status(500).send('Error updating status');
+                return;
+            }
+            res.redirect('/admin-dashboard'); 
+        }
+    );
+}
+
+app.post('/adminsearch', (req, res) => {
+    const carID = req.body.carID;
+    const lastName = req.body.lastName;
+    const reservationDate = req.body.reservationDate;
+
+ 
+    let query = `
+    SELECT cars.*, offices.* , customers.*, reservations.* 
+    FROM cars 
+    LEFT JOIN reservations ON cars.CarID = reservations.CarID 
+    LEFT JOIN customers ON reservations.CustomerID = customers.CustomerID
+    JOIN offices ON cars.office_id=offices.office_id 
+    WHERE 1=1
+`;
+
+    const queryParams = [];
+
+    if (carID) {
+        query += ' AND cars.CarID = ?';
+        queryParams.push(carID);
+    }
+
+    if (lastName) {
+        query += ' AND customers.LastName LIKE ?';
+        queryParams.push(`%${lastName}%`);
+    }
+
+    if (reservationDate) {
+        query += ' AND reservations.ReservationDate = ?';
+        queryParams.push(reservationDate);
+    }
+
+ 
+    connection.query(query, queryParams, (err, results) => {
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error searching');
+            return;
+        }
+
+     
+        res.render('admin-search-results.ejs', { searchResults: results });
+    });
+});
+
+app.get('/admin-search-form', (req, res) => {
+    res.render('admin-search-form'); // Renders admin-search-form.ejs
+});
+
+app.get('/admin-Register-car', isAdmin, (req, res) => {
+    connection.query(
+        'SELECT * FROM offices',
+        (err, offices) => {
+            if (err) {
+                console.error('Error fetching offices:', err);
+                res.status(500).send('Error fetching offices');
+                return;
+            }
+            res.render('admin-Register-car.ejs', { offices });
+        }
+    );
+});
+
+
+app.post('/admin-Register-car', isAdmin, (req, res) => {
+    const { model, year, plateid, unitprice,officeid } = req.body;
+    const status = 'active';
+
+    connection.query(
+        'INSERT INTO cars (Model, Year, PlateID, Status, unitprice,office_id) VALUES (?, ?, ?, ?, ?, ?)',
+        [model, year, plateid, status,unitprice ,officeid],
+        (err, results) => {
+            if (err) {
+                console.error('Error registering new car:', err);
+                res.status(500).send('Error registering new car');
+                return;
+            }
+            
+           
+            res.redirect('/admin-dashboard');
+        }
+    );
+});
+
 
 
 app.listen(PORT, () => {

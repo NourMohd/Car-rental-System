@@ -1,26 +1,110 @@
-<h1>My Reservations</h1>
 
-<% if(reservations && reservations.length > 0) { %>
-    <ul>
-    <% reservations.forEach(reservation => { %>
-        <li>
-            <strong>Reservation Details:</strong><br>
-            Reservation Date: <%= new Date(reservation.ReservationDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
-            Pickup Date: <%= new Date(reservation.PickupDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
-            Return Date: <%= new Date(reservation.ReturnDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %> <br>
-            
-            <% const carDetail = cars.find(car => car.CarID === reservation.CarID); %>
-            <% if(carDetail) { %>
-                <strong>Car Details:</strong><br>
-                Model: <%= carDetail.Model %> <br>
-                Year: <%= carDetail.Year %> <br>
-                Plate ID: <%= carDetail.PlateID %> <br>
-                Unit Price: <%= carDetail.unitprice %> <br>
-                
-            <% } %>
-        </li>
-    <% }); %>
-    </ul>
-<% } else { %>
-    <p>No reservations found.</p>
-<% } %>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/owl.css">
+    <!-- Add any other styles if necessary -->
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">My Reservations</h1>
+
+        <h1>My Reservations</h1>
+
+        <% if(reservations && reservations.length > 0) { %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Reservation Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Plate ID</th>
+                    <th>Unit Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reservations.forEach(reservation => { %>
+                <tr>
+                    <td><%= new Date(reservation.ReservationDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                    <td><%= new Date(reservation.PickupDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                    <td><%= new Date(reservation.ReturnDate).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+
+                    <% const carDetail = cars.find(car => car.CarID === reservation.CarID); %>
+                    <% if(carDetail) { %>
+                    <td><%= carDetail.Model %></td>
+                    <td><%= carDetail.Year %></td>
+                    <td><%= carDetail.PlateID %></td>
+                    <td><%= carDetail.unitprice %></td>
+                    <% } else { %>
+                    <td colspan="4">Car details not found</td>
+                    <% } %>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+        <p>No reservations found.</p>
+        <% } %>
+    </div>
+
+<!-- Header -->
+<header class="">
+    <nav class="navbar navbar-expand-lg">
+        <!-- Navbar content here -->
+    </nav>
+</header>
+
+<!-- Page Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="mt-5">
+    <!-- Footer content here -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/jquery/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Additional Scripts -->
+<script src="/js/custom.js"></script>
+<script src="/js/owl.js"></script>
+
+</body>
+
+</html>
+

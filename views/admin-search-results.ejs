@@ -1,0 +1,125 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>searchResults</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/owl.css">
+    <!-- Add any other styles if necessary -->
+
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+<body>
+
+    <h1>Search Results</h1>
+
+    <% if (searchResults && searchResults.length > 0) { %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>PlateID</th>
+                    <th>Status</th>
+                    <th>unitPrice</th>
+                    <th>office_id</th>
+                    <th>office Location</th>
+                    <th>office contact_info</th>
+                    <th>Customer ID</th>
+                    <th>Customer First Name</th>
+                    <th>Customer Last Name</th>
+                    <th>Customer Email</th>
+                    <th>Customer Phone</th>
+                    <th>Customer Address</Address></th>
+                    <th>Reservation Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+
+                    <!-- Add other columns as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                <% searchResults.forEach(results => { %>
+                    <tr>
+                        <td><%= results.CarID %></td>
+                        <td><%= results.Model %></td>
+                        <td><%= results.Year %></td>
+                        <td><%= results.PlateID %></td>
+                        <td><%= results.Status %></td>
+                        <td><%= results.unitprice %></td>
+                        <td><%= results.office_id %></td>
+                        <td><%= results.location %></td>
+                        <td><%= results.contact_info %></td>
+                        <td><%= results.CustomerID %></td>
+                        <td><%= results.FirstName %></td>
+                        <td><%= results.LastName %></td>
+                        <td><%= results.Email %></td>
+                        <td><%= results.Phone %></td>
+                        <td><%= results.Address %></td>
+                        <td><%= results.ReservationDate.toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                        <td><%= results.PickupDate.toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                        <td><%= results.ReturnDate.toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                        
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No results found.</p>
+    <% } %>
+
+<!-- Header -->
+<header class="">
+    <nav class="navbar navbar-expand-lg">
+        <!-- Navbar content here -->
+    </nav>
+</header>
+
+<!-- Page Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="mt-5">
+    <!-- Footer content here -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/jquery/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Additional Scripts -->
+<script src="/js/custom.js"></script>
+<script src="/js/owl.js"></script>
+
+</body>
+
+</html>

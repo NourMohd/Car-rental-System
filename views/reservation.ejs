@@ -1,60 +1,138 @@
-<%- include('header') %>
 
-    <h1>Make a Car Reservation</h1>
 
-    <!-- Displaying the reservation date -->
-    <p>Reservation Date: <%= reservationDate %>
-    </p>
 
-    <h2>Customer Details:</h2>
-    <p>Name: <%= customerDetails.FirstName %>
-            <%= customerDetails.LastName %>
-    </p>
-    <p>Email: <%= customerDetails.Email %>
-    </p>
-    <p>Phone: <%= customerDetails.Phone %>
-    </p>
 
-    <h2>Car Details:</h2>
-    <p>Model: <%= selectedCar.Model %>
-    </p>
-    <p>Year: <%= selectedCar.Year %>
-    </p>
-    <p>Office Location: <%= selectedCar.location %></p> 
-    <p>Unit Price: <%= selectedCar.unitprice %> $</p>
-    <img src="/car_images/<%= selectedCar.Model %>.png" alt='<%= selectedCar.Model %> image'>
 
-    <form action="/reservation" method="post">
-        <label for="pickupDate">Pickup Date:</label>
-        <input type="date" id="pickupDate" name="pickupDate" required><br><br>
 
-        <label for="returnDate">Return Date:</label>
-        <input type="date" id="returnDate" name="returnDate" required><br><br>
 
-        <!-- Payment Method -->
-        <label for="paymentMethod">Payment Method:</label>
-        <select id="paymentMethod" name="paymentMethod">
-            <option value="cash">Cash</option>
-            <option value="creditCard">Credit Card</option>
-            <option value="visa">Visa</option>
-        </select><br><br>
+<!DOCTYPE html>
+<html lang="en">
 
-        <!-- Visa Card Number (Initially hidden) -->
-        <div id="visaDetails" style="display:none;">
-            <label for="visaNumber">Visa Card Number:</label>
-            <input type="text" id="visaNumber" name="visaNumber" placeholder="Enter Visa Card Number">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="assets/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Car Rental Website</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
 
-        <h3>Total Price: <span id="totalPrice">0</span> $</h3>
+    <!-- Header -->
+    <header class="">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html"><h2>Car Rental <em>Website</em></h2></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
 
-        <input type="hidden" id="unitPrice" name="unitPrice" value="<%= selectedCar.unitprice %>">
-        <input type="hidden" name="reservationDate" value="<%= reservationDate %>">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Register/Login</a>
+                            <!-- Dropdown content can be added here -->
+                        </li>
 
-        <button type="submit">Reserve Car</button>
-    </form>
+                        <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
 
-<%- include('footer') %>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <!-- Page Content -->
+    <div class="page-heading about-heading header-text" style="background-image: url(assets/images/heading-3-1920x500.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-content">
+                        <h1>Make a Car Reservation</h1>
+
+                        <!-- Displaying the reservation date -->
+                        <p>Reservation Date: <%= reservationDate %></p>
+
+                        <h2>Customer Details:</h2>
+                        <p>Name: <%= customerDetails.FirstName %> <%= customerDetails.LastName %></p>
+                        <p>Email: <%= customerDetails.Email %></p>
+                        <p>Phone: <%= customerDetails.Phone %></p>
+
+                        <h2>Car Details:</h2>
+                        <p>Model: <%= selectedCar.Model %></p>
+                        <p>Year: <%= selectedCar.Year %></p>
+                        <p>Office Location: <%= selectedCar.location %></p> 
+                        <p>Unit Price: <%= selectedCar.unitprice %> $</p>
+                        <img src="/car_images/<%= selectedCar.Model %>.png" alt='<%= selectedCar.Model %> image'>
+
+                        <form action="/reservation" method="post">
+                            <label for="pickupDate">Pickup Date:</label>
+                            <input type="date" id="pickupDate" name="pickupDate" required><br><br>
+
+                            <label for="returnDate">Return Date:</label>
+                            <input type="date" id="returnDate" name="returnDate" required><br><br>
+
+                            <!-- Payment Method -->
+                            <label for="paymentMethod">Payment Method:</label>
+                            <select id="paymentMethod" name="payment_method">
+                                <option value="cash">Cash</option>
+                                <option value="creditCard">Credit Card</option>
+                                <option value="visa">Visa</option>
+                            </select><br><br>
+
+                            <!-- Visa Card Number (Initially hidden) -->
+                            <div id="visaDetails" style="display:none;">
+                                <label for="visaNumber">Visa Card Number:</label>
+                                <input type="text" id="visaNumber" name="visaNumber" placeholder="Enter Visa Card Number">
+                            </div>
+
+                            <h3>Total Price: <span id="totalPrice">0</span> $</h3>
+                            <input type="hidden" id="totalPriceInput" name="totalprice" value="0">
+                            <input type="hidden" id="unitPrice" name="unitPrice" value="<%= selectedCar.unitprice %>">
+                            <input type="hidden" name="reservationDate" value="<%= reservationDate %>">
+                            <button type="submit">Reserve Car</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/owl.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const pickupDateInput = document.getElementById('pickupDate');
@@ -89,6 +167,7 @@
                 
                 
                 totalPriceElement.textContent = totalPrice.toFixed(2);
+                document.getElementById('totalPriceInput').value = totalPrice.toFixed(2);
             }
         };
 
@@ -118,3 +197,4 @@
     });
 
 </script>
+<% include('footer') %>

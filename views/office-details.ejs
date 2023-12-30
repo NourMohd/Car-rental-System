@@ -1,9 +1,71 @@
-<%- include("header") %>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Office Details</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Details</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
+    <!-- Bootstrap core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<p>Location: <%= officeDetails.location %></p>
-<p>Contact Info: <%= officeDetails.contact_info %></p>
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/owl.css">
+    <!-- Add any other styles if necessary -->
 
-<%- include("footer") %>
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Office Details</h1>
+    
+        <p>Location: <%= officeDetails.location %></p>
+        <p>Contact Info: <%= officeDetails.contact_info %></p>
+    
+        <%- include("footer") %>
+    </div>
+  
+
+    <!-- Header -->
+    <header class="">
+        <nav class="navbar navbar-expand-lg">
+            <!-- Navbar content here -->
+        </nav>
+    </header>
+
+    <!-- Page Content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <!-- Footer content here -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="/js/custom.js"></script>
+    <script src="/js/owl.js"></script>
+
+</body>
+
+</html>
