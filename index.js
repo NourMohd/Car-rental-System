@@ -201,7 +201,7 @@ app.post('/reservation', (req, res) => {
     const selectedCarId = req.session.car.CarID;
     const pickupDate = req.body.pickupDate;
     const returnDate = req.body.returnDate;
-    const status = 'reserved';
+    const status = 'Reserved';
     const totalprice=req.body.totalprice;
     const payment_method=req.body.payment_method;
     
@@ -218,7 +218,7 @@ app.post('/reservation', (req, res) => {
                 return;
             }
 
-            // Update the car's status to 'reserved'
+            // Update the car's status to 'Reserved'
             connection.query(
                 'UPDATE cars SET Status = ? WHERE CarID = ?',
                 [status, selectedCarId],
@@ -359,7 +359,7 @@ app.post('/update-status', (req, res) => {
     const newStatus = req.body.status;
 
     
-    if (newStatus === "reserved") {
+    if (newStatus === "Reserved") {
         connection.query(
             'DELETE FROM reservations WHERE CarID = ?',
             [carID],
@@ -466,7 +466,7 @@ app.get('/admin-Register-car', isAdmin, (req, res) => {
 
 app.post('/admin-Register-car', isAdmin, (req, res) => {
     const { model, year, plateid, unitprice,officeid } = req.body;
-    const status = 'active';
+    const status = 'Active';
 
     connection.query(
         'INSERT INTO cars (Model, Year, PlateID, Status, unitprice,office_id) VALUES (?, ?, ?, ?, ?, ?)',

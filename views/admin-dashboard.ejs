@@ -13,33 +13,9 @@
     <link rel="stylesheet" href="/css/fontawesome.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/owl.css">
+    <link rel="stylesheet" href="/styles/admin-dashboard.css">
 
-    <!-- Custom table styles -->
-    <!-- Custom table styles -->
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: orange;
-            color: black;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #ddd;
-        }
-    </style>
 </head>
 
 <body>
@@ -47,7 +23,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">Car Rental <em>Website</em></a>
+            <a class="navbar-brand" href="/">Car Rental <em>Website</em> 'Admins-only'</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -86,13 +62,14 @@
     </div>
 
     <title>Admin Dashboard</title>
-</head>
 
-<body>
-    <div class="container mt-5" style="padding-top: 50px;">
+
+
+    <div class="container mt-5">
         
     
-    
+    <!-- cars table -->
+    <h1>Cars Status</h1>
     <table border="1">
         <thead>
             <tr>
@@ -112,11 +89,9 @@
                     <form action="/update-status" method="post">
                         <input type="hidden" name="CarID" value="<%= car.CarID %>">
                         <select name="status">
-                            <option value="<%= car.Status %>"><%= car.Status %></option>
-                            <option value="active">Active</option>
-                            <option value="reserved">Reserved</option>
-                            <option value="out of service">Out of Service</option>
-                            <!-- Add other status options as needed -->
+                            <option value="Active">Active</option>
+                            <option value="Reserved">Reserved</option>
+                            <option value="Out of service">Out of Service</option>
                         </select>
                         <button type="submit">Update</button>
                     </form>
