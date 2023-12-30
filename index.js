@@ -201,16 +201,10 @@ app.post('/reservation', (req, res) => {
     const selectedCarId = req.session.car.CarID;
     const pickupDate = req.body.pickupDate;
     const returnDate = req.body.returnDate;
-<<<<<<< HEAD
-    const status = 'Reserved';
-
-
-=======
     const status = 'reserved';
     const totalprice=req.body.totalprice;
     const payment_method=req.body.payment_method;
     
->>>>>>> e33504008a1d0646be2d376eab918bb14108964b
 
 
     // // Save the reservation to the database
