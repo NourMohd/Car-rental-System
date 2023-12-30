@@ -68,106 +68,52 @@ footer p {
 
 /*---------------------------------- welecome ---------------------------------*/
 
-/* General layout styles */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f4f4;
 }
 
-.welcomeContainer {
+.card-container {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Center vertically */
 }
 
-.filterSection {
-  flex: 1;
-  padding: 20px;
-  background-color: #f5f5f5;
+.card {
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  width: 220px; /* Decrease box size */
 }
 
-.yearFilter,
-.unitpriceFilter {
-  margin-bottom: 20px;
+.card:hover {
+  transform: translateY(-10px);
 }
 
-.unitpriceFilter {
-  margin-top: 20px;
+.car-image {
+  height: 150px; /* Adjusted image height */
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 1rem;
 }
 
-.unitpriceFilter input[type="text"],
-.unitpriceFilter input[type="submit"] {
-  margin-bottom: 10px;
-  padding: 8px;
-  display: block;
+/* Add color classes for statuses */
+.bg-success {
+  background-color: #28a745;
 }
 
-.priceFilterSubmit {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+.bg-danger {
+  background-color: #dc3545;
 }
 
-.priceFilterSubmit:hover {
-  background-color: #0056b3;
-}
-
-.carsSection {
-  flex: 2;
-  padding: 20px;
-}
-
-.singleCarDetails {
-  display: flex;
-  flex-direction: row;
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.singleCarDetails img {
-  max-width: 150px;
-  max-height: 100px;
-  margin-right: 20px;
-}
-
-.button {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  margin-right: 10px;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-/* Small buttons for Office Details and Car History */
-.officeDetailsButton,
-.carHistoryButton {
-  padding: 6px 12px; /* Adjust padding for smaller size */
-  font-size: 14px; /* Decrease font size */
-  margin-right: 8px; /* Optional: Adjust spacing */
-}
-
-/* Responsive styles for smaller screens */
-@media screen and (max-width: 768px) {
-  .welcomeContainer {
-    flex-direction: column;
-  }
-  
-  .filterSection,
-  .carsSection {
-    flex: auto;
-    width: 100%;
-  }
+.bg-warning {
+  background-color: #ffc107;
 }
 
 
