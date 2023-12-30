@@ -1,109 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("admin-header") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="/css/fontawesome.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/owl.css">
-    <link rel="stylesheet" href="/styles/admin-dashboard.css">
-
-
-</head>
-
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">Car Rental <em>Website</em> 'Admins-only'</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin-search-form">Go to Search Form</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin-Register-car">Register new car</a>
-                    </li>
-                </ul>
-            </div>
+    <body>
+        <!-- cars table -->
+        <div class="container mt-5">
+            
+            <h1>Cars Status</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Car ID</th>
+                        <th>Model</th>
+                        <th>Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% carsList.forEach(car=> { %>
+                        <tr>
+                            <td>
+                                <%= car.CarID %>
+                            </td>
+                            <td>
+                                <%= car.Model %>
+                            </td>
+                            <td>
+                                <%= car.Status %>
+                            </td>
+                            <td>
+                                <form action="/update-status" method="post">
+                                    <input type="hidden" name="CarID" value="<%= car.CarID %>">
+                                    <select name="status">
+                                        <option value="Active">Active</option>
+                                        <option value="Reserved">Reserved</option>
+                                        <option value="Out of service">Out of Service</option>
+                                    </select>
+                                    <button type="submit">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </div>
-    </nav>
-   
-    
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="/jquery/jquery.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Additional Scripts -->
-    <script src="/js/custom.js"></script>
-    <script src="/js/owl.js"></script>
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
         </div>
-    </div>
-
-    <title>Admin Dashboard</title>
 
 
+    </body>
 
-    <div class="container mt-5">
-        
-    
-    <!-- cars table -->
-    <h1>Cars Status</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Car ID</th>
-                <th>Model</th>
-                <th>Status</th>
-                <th>Update Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% carsList.forEach(car => { %>
-            <tr>
-                <td><%= car.CarID %></td>
-                <td><%= car.Model %></td>
-                <td><%= car.Status %></td>
-                <td>
-                    <form action="/update-status" method="post">
-                        <input type="hidden" name="CarID" value="<%= car.CarID %>">
-                        <select name="status">
-                            <option value="Active">Active</option>
-                            <option value="Reserved">Reserved</option>
-                            <option value="Out of service">Out of Service</option>
-                        </select>
-                        <button type="submit">Update</button>
-                    </form>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
-
-</div>
-
-    
-</body>
-
-</html>
+    </html>
