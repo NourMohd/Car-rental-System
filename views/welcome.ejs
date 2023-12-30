@@ -65,7 +65,14 @@
                 <% if(carsList && carsList.length > 0) { %>
                 <% carsList.forEach((car) => { %>
                 <div class="card <% if(car.Status === 'Active' || car.Status === 'active') { %>bg-success<% } else if(car.Status === 'Inactive' || car.Status === 'inactive') { %>bg-danger<% } else { %>bg-warning<% } %>">
-                    <img src="/car_images/<%= car.Model %>.png" class="card-img-top car-image" alt="<%= car.Model %> image">
+                    
+                    <div class="image-container">
+                        <img src="/car_images/<%= car.Model %>.png" 
+                        class="card-img-top car-image"
+                        alt="No car image available" 
+                        onerror="this.onerror=null; this.src='/car_images/no-car-img.png';">
+                    </div>
+                    
                     <div class="card-body">
                         <h5 class="card-title"><%= car.Model %></h5>
                         <p class="card-text">
