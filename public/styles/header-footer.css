@@ -1,125 +1,173 @@
 /* Resetting default margin and padding */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-  }
-  
-  header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-  }
-  
-  .navBar {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  h1 {
-    font-size: 24px;
-  }
-  
-  form {
-    display: flex;
-    align-items: center;
-  }
-  
-  input[type="text"] {
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-right: 8px;
-    width: 250px;
-  }
-  
-  button {
-    padding: 8px 16px;
-    background-color: #ff9900;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #e68a00;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-  }
-  
-  footer p {
-    font-size: 14px;
-  }
+body {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0;
+}
+
+.navBar {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 250px;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e68a00;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+footer p {
+  font-size: 14px;
+}
 
 
 
 /*---------------------------------- welecome ---------------------------------*/
 
-  /* Main Container Styles */
-.carsContainer {
+/* General layout styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.welcomeContainer {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.filterSection {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.yearFilter,
+.unitpriceFilter {
+  margin-bottom: 20px;
+}
+
+.unitpriceFilter {
   margin-top: 20px;
 }
 
-/* Single Car Details Styles */
-.singleCarDetails {
-  width: 300px;
-  margin: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.singleCarDetails img {
-  max-width: 100%;
-  height: auto;
+.unitpriceFilter input[type="text"],
+.unitpriceFilter input[type="submit"] {
   margin-bottom: 10px;
-  border-radius: 6px;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  display: block;
 }
 
-.singleCarDetails button {
-  margin-top: 10px;
+.priceFilterSubmit {
   padding: 8px 16px;
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.singleCarDetails button:hover {
+.priceFilterSubmit:hover {
   background-color: #0056b3;
 }
 
-/* Error Message Styles */
-.carsContainer li {
-  color: red;
-  text-align: center;
-  margin-top: 20px;
+.carsSection {
+  flex: 2;
+  padding: 20px;
 }
 
-/* Responsive Styling */
+.singleCarDetails {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.singleCarDetails img {
+  max-width: 150px;
+  max-height: 100px;
+  margin-right: 20px;
+}
+
+.button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Small buttons for Office Details and Car History */
+.officeDetailsButton,
+.carHistoryButton {
+  padding: 6px 12px; /* Adjust padding for smaller size */
+  font-size: 14px; /* Decrease font size */
+  margin-right: 8px; /* Optional: Adjust spacing */
+}
+
+/* Responsive styles for smaller screens */
 @media screen and (max-width: 768px) {
-  .singleCarDetails {
-      width: 100%;
+  .welcomeContainer {
+    flex-direction: column;
+  }
+  
+  .filterSection,
+  .carsSection {
+    flex: auto;
+    width: 100%;
   }
 }
+
+

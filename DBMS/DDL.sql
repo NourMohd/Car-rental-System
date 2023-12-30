@@ -41,7 +41,7 @@ CREATE TABLE Car (
     FOREIGN KEY (Reservation_no) REFERENCES Reservation(Reservation_no)
 );
 
-CREATE TABLE Office (
+CREATE TABLE Offices (
     office_id INT PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
     phonenumber VARCHAR(15) UNIQUE,

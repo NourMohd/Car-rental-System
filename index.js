@@ -132,11 +132,11 @@ app.get('/myreservations', (req, res) => {
                         return;
                     }
 
-                   
+
                     const renders = {
                         customerDetails: req.session.customer,
                         reservations: reservations,
-                        cars: cars 
+                        cars: cars
                     };
 
                     res.render('myreservations.ejs', renders);
@@ -178,8 +178,7 @@ app.get('/reservation', (req, res) => {
             };
 
             res.render('reservation.ejs', renders);
-        }
-    );
+        });
 });
 
 
@@ -191,10 +190,10 @@ app.post('/reservation', (req, res) => {
     const selectedCarId = req.session.car.CarID;
     const pickupDate = req.body.pickupDate;
     const returnDate = req.body.returnDate;
-    const status = 'reserved';
-    
+    const status = 'Reserved';
 
-    
+
+
 
     // // Save the reservation to the database
     connection.query(
@@ -226,7 +225,7 @@ app.post('/reservation', (req, res) => {
 app.get('/office-details', (req, res) => {
     const carID = req.query.CarID;
 
-    
+
     connection.query('SELECT o.location, o.contact_info FROM cars c JOIN offices o ON c.office_id = o.office_id WHERE c.CarID = ?', [carID], (err, results) => {
         if (err) {
             console.error('Error fetching office details:', err);
@@ -240,28 +239,66 @@ app.get('/office-details', (req, res) => {
         }
 
         const officeDetails = results[0];
-       
+
         res.render('office-details.ejs', { officeDetails });
+    });
+});
+
+
+app.post('/filter', (req, res) => {
+    const customer = req.session.customer;
+    const yearFilter = req.body.year || [];
+    const minPrice = req.body.minPrice;
+    const maxPrice = req.body.maxPrice;
+    // req.session.selectedYears = yearFilter;
+    let query = 'SELECT * FROM `cars` WHERE 1';
+
+    const queryParams = [];
+
+
+    if (yearFilter && yearFilter.length > 0) {
+        query += ' AND cars.Year IN (?)';
+        queryParams.push(yearFilter);
+    }
+
+
+    if (minPrice && maxPrice) {
+        query += ' AND cars.unitprice BETWEEN ? AND ?';
+        queryParams.push(minPrice, maxPrice);
+    }
+
+    connection.query(query, queryParams, (err, cars) => {
+        if (err) {
+            res.status(500).send('Error loading cars');
+            return;
+        }
+        const renders = {
+            customerDetails: customer,
+            carsList: cars,
+            selectedYears: yearFilter,
+            error: "No available cars"
+        }
+        res.render('welcome.ejs', renders);
     });
 });
 
 
 
 
-
-
 app.get('/dashboard', (req, res) => {
     const customer = req.session.customer;
+    const yearFilter = req.body.year || [];
     connection.query(
         'SELECT * FROM cars',
         (err, cars) => {
-            if (err) { 
+            if (err) {
                 res.status(500).send('Error during login');
                 return;
             }
             const renders = {
-                customerDetails : customer,
+                customerDetails: customer,
                 carsList: cars,
+                selectedYears: yearFilter,
                 error: "No available cars"
             }
             res.render('welcome.ejs', renders);

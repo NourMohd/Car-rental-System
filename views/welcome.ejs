@@ -1,45 +1,109 @@
-<%- include("headermyreservation") %>
+<%- include("header") %>
 
-<!-- The cars and their status with reservation option -->
-<div class="carsContainer">
-<% if(locals.carsList && carsList.length != 0) { %>
-    <% carsList.forEach( (car) => { %>
-    <div class="singleCarDetails">
-        <%= car.CarID %> <br>   
-        <%= car.Model %>
-        <%= car.Year %><br>
-        <%= car.PlateID %><br>
-        <%= car.unitprice %>$<br>
-        <img src="/car_images/<%= car.Model %>.png" alt='<%= car.Model %> image'>
-        
-        <!-- Display "reserve" button only if the car's status is "active" -->
-        <% if(car.Status === "Active"||car.Status === "active" ) {%>
-            <form class="submit" action="/reservation" method="get">
-                <input type="hidden" name="CarID" value="<%= car.CarID %>">
-                <input type="hidden" name="CustomerID" value="<%= customerDetails.CustomerID %>">
-                <button type="submit">Reserve</button>
+    <div class="welcomeContainer">
+        <div class="filterSection">
+            <form action="/filter" method="post" id="filterForm">
+
+                
+                <!-- Year Filter -->
+                <div class="yearFilter">
+                    <h2>Year Filter</h2>
+                    <label for="year2019">
+                        <input type="checkbox" id="year2019" name="year" value="2019" 
+                        <%= selectedYears.includes('2019') ? 'checked' : '' %> 
+                        onchange="this.form.submit()">
+                        2019
+                    </label><br>
+                    <label for="year2020">
+                        <input type="checkbox" id="year2020" name="year" value="2020"
+                        <%= selectedYears.includes('2020') ? 'checked' : '' %> 
+                        onchange="this.form.submit()">
+                        2020
+                    </label><br>
+
+                    <label for="year2021">
+                        <input type="checkbox" id="year2021" name="year" value="2021"
+                        <%= selectedYears.includes('2021') ? 'checked' : '' %> 
+                        onchange="this.form.submit()">
+                        2021
+                    </label><br>
+
+                    <label for="year2022">
+                        <input type="checkbox" id="year2022" name="year" value="2022"
+                        <%= selectedYears.includes('2022') ? 'checked' : '' %> 
+                        onchange="this.form.submit()">
+                        2022
+                    </label><br>
+
+                    <label for="year2023">
+                        <input type="checkbox" id="year2023" name="year" value="2023"
+                        <%= selectedYears.includes('2023') ? 'checked' : '' %>  
+                        onchange="this.form.submit()">
+                        2023
+                    </label><br>
+                </div>
+
+                <!-- Unit price Filter -->
+                <div class="unitpriceFilter">
+                    <h2>Unit Price Filter</h2>
+                    <input type="text" name="minPrice" placeholder="min price">
+                    <input type="text" name="maxPrice" placeholder="max price">
+                    <input type="submit" class="priceFilterSubmit">
+                </div>
+                
+                
             </form>
 
-            <% }else{%>
-                Status : <%= car.Status %>
-               <% } %>
+        </div>
+        
 
-                <!-- Office Details Button -->
-        <a href="/office-details?CarID=<%= car.CarID %>" class="button">Office Details</a>
+        <div class="carsSection">
+            <% if (locals.carsList && carsList.length !=0) { %>
+                <% carsList.forEach((car)=> { %>
+                    <div class="singleCarDetails">
+                        <!-- Car details content -->
+                        <!-- ... -->
+                        <%= car.CarID %> <br>
+                        <%= car.Model %>
+                        <%= car.Year %><br>
+                        <%= car.PlateID %><br>
+                        <%= car.unitprice %>$<br>
+                        <div class="image-container">
+                            <img src="/car_images/<%= car.Model %>.png" 
+                            alt="No car image available" 
+                            onerror="this.onerror=null; this.src='/car_images/no-car-img.png';">
+                        </div>
 
-        <!-- History Button -->
-        <a href="/car-history?CarID=<%= car.CarID %>" class="button">History</a>
+                        <!-- Display "reserve" button only if the car's status is "active" -->
+                        <% if(car.Status==="Active" ||car.Status==="active" ) {%>
+                            <form class="submit" action="/reservation" method="get">
+                                <input type="hidden" name="CarID" value="<%= car.CarID %>">
+                                <input type="hidden" name="CustomerID"
+                                    value="<%= customerDetails.CustomerID %>">
+                                <button type="submit">Reserve</button>
+                            </form>
 
+                        <% }else{%>
+                            Status : <%= car.Status %>
+                        <% } %>
 
+                        <!-- Office Details Button -->
+                        <a href="/office-details?CarID=<%= car.CarID %>"
+                            class="officeDetailsButton">Office Details</a>
 
+                        <!-- History Button -->
+                        <a href="/car-history?CarID=<%= car.CarID %>"
+                            class="carHistoryButton">History</a>
+
+                    </div>
+                <% }) %>
+            <% } else { %>
+                    <li>
+                    <%= error %>
+                    </li>
+            <% } %>
+        </div>
     </div>
-    <% }) %>
-<% } else { %>
-    <li><%= error %></li>
-<% } %>
 
-</div>
-
-<!-- The cars and their status with reservation option -->
 
 <%- include("footer") %>
