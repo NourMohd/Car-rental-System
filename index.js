@@ -295,6 +295,8 @@ app.post('/filter', (req, res) => {
             customerDetails: customer,
             carsList: cars,
             selectedYears: yearFilter,
+            selected_minPrice: minPrice,
+            selected_maxPrice: maxPrice,
             error: "No available cars"
         }
         res.render('welcome.ejs', renders);
@@ -307,6 +309,8 @@ app.post('/filter', (req, res) => {
 app.get('/dashboard', (req, res) => {
     const customer = req.session.customer;
     const yearFilter = req.body.year || [];
+    const minPrice = req.body.minPrice;
+    const maxPrice = req.body.maxPrice;
     connection.query(
         'SELECT * FROM cars',
         (err, cars) => {
@@ -318,6 +322,8 @@ app.get('/dashboard', (req, res) => {
                 customerDetails: customer,
                 carsList: cars,
                 selectedYears: yearFilter,
+                selected_minPrice: minPrice,
+                selected_maxPrice: maxPrice,
                 error: "No available cars"
             }
             res.render('welcome.ejs', renders);

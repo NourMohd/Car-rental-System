@@ -2,56 +2,6 @@
 <!-- <link rel="stylesheet" href="/styles/welcome.css"> -->
 <!-- <link rel="stylesheet" href="/css/fontawesome.css"> -->
 
-<!-- <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f4f4f4;
-    }
-
-    .card-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Center vertically */
-    }
-
-    .card {
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 1rem;
-        width: 220px; /* Decrease box size */
-    }
-
-    .card:hover {
-        transform: translateY(-10px);
-    }
-
-    .car-image {
-        height: 150px; /* Adjusted image height */
-        width: auto;
-        object-fit: contain;
-        margin-bottom: 1rem;
-    }
-
-    /* Add color classes for statuses */
-    .bg-success {
-        background-color: #28a745;
-    }
-
-    .bg-danger {
-        background-color: #dc3545;
-    }
-
-    .bg-warning {
-        background-color: #ffc107;
-    }
-</style> -->
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -59,7 +9,6 @@
             <h1 class="text-center">My Reservations</h1>
             <div class="filterSection">
                 <form action="/filter" method="post" id="filterForm">
-    
                     
                     <!-- Year Filter -->
                     <div class="yearFilter">
@@ -102,9 +51,10 @@
                     <!-- Unit price Filter -->
                     <div class="unitpriceFilter">
                         <h2>Unit Price Filter</h2>
-                        <input type="text" name="minPrice" placeholder="min price">
-                        <input type="text" name="maxPrice" placeholder="max price">
+                        <input type="text" name="minPrice" placeholder="<%= selected_minPrice %>" value="<%= selected_minPrice %>">
+                        <input type="text" name="maxPrice" placeholder="<%= selected_maxPrice %>" value="<%= selected_maxPrice %>">
                         <input type="submit" class="priceFilterSubmit">
+                        <button type="button" class="clearFilters">Clear</button>
                     </div>
                     
                     
@@ -144,3 +94,28 @@
 </div>
 
 <%- include("footer") %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.yearFilter input[type="checkbox"]');
+        const priceInputs = document.querySelectorAll('.unitpriceFilter input[type="text"]');
+
+        // Function to clear checkboxes and price inputs
+        function clearFilters() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            priceInputs.forEach(input => {
+                input.value = '';
+            });
+
+            document.getElementById('filterForm').submit(); // Submit the form after clearing
+        }
+
+        // Event listener for the Clear button
+        document.querySelector('.clearFilters').addEventListener('click', function() {
+            clearFilters();
+        });
+    });
+</script>
