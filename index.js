@@ -330,6 +330,7 @@ app.get('/dashboard', (req, res) => {
         });
 });
 
+// admin routes
 const isAdmin = (req, res, next) => {
     if (!req.session || !req.session.role || req.session.role !== 'admin') {
         return res.status(403).send('Admin access required');
@@ -381,10 +382,6 @@ app.post('/update-status', (req, res) => {
 
 
 
-
-
-
-
 function updateCarStatus(res, carID, newStatus) {
     connection.query(
         'UPDATE cars SET Status = ? WHERE CarID = ?',
@@ -399,6 +396,10 @@ function updateCarStatus(res, carID, newStatus) {
         }
     );
 }
+
+app.get('/admin-search-form', (req, res) => {
+    res.render('admin-search-form'); 
+});
 
 app.post('/adminsearch', (req, res) => {
     const carID = req.body.carID;
@@ -445,9 +446,7 @@ app.post('/adminsearch', (req, res) => {
     });
 });
 
-app.get('/admin-search-form', (req, res) => {
-    res.render('admin-search-form'); // Renders admin-search-form.ejs
-});
+
 
 app.get('/admin-Register-car', isAdmin, (req, res) => {
     connection.query(
