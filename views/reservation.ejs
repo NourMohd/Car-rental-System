@@ -1,82 +1,85 @@
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="assets/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
     <title>Car Rental Website</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
-    <link rel="stylesheet" href="assets/css/login.css">
-</head>
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Add this style block to your existing head section */
+        .book-now-button {
+        background-color: black;
+        color: orange;
+        border: 2px solid red;
+        border-radius: 5px;
+        padding: 3px 15px; /* Adjust padding as needed */
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin-top: 10px; /* Adjust margin as needed */
+        cursor: pointer;
+      }
+      </style>
+      <style>
+        /* Existing styles... */
+    
+        /* Style for h2 elements */
+        h2 {
+            color: red;
+        }
+    
+        /* Style for p elements */
+        p {
+            color: orange;
+        }
+        label {
+        color: orange;
+    }
+    </style>
+    
 
-<body>
+  </head>
 
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <!-- ***** Preloader End ***** -->
+
+  <body>
+
+    
 
     <!-- Header -->
     <header class="">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="index.html"><h2>Car Rental <em>Website</em></h2></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Register/Login</a>
-                            <!-- Dropdown content can be added here -->
-                        </li>
-
-                        <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
-
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="/"><h2>Car Rental <em>Website</em></h2></a>
+                
     </header>
 
     <!-- Page Content -->
-    <div class="page-heading about-heading header-text" style="background-image: url(assets/images/heading-3-1920x500.jpg);">
+    
+
+
+
+
+
+    <!-- Page Content -->
+    <div class="page-heading about-heading header-text" style="background-image: url(/images/heading-6-1920x500.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-content">
-                        <h1>Make a Car Reservation</h1>
+                        <h2>Make a Car Reservation</h2>
 
                         <!-- Displaying the reservation date -->
                         <p>Reservation Date: <%= reservationDate %></p>
@@ -114,11 +117,11 @@
                                 <input type="text" id="visaNumber" name="visaNumber" placeholder="Enter Visa Card Number">
                             </div>
 
-                            <h3>Total Price: <span id="totalPrice">0</span> $</h3>
+                            <p>Total Price: <span id="totalPrice">0</span> $</p>
                             <input type="hidden" id="totalPriceInput" name="totalprice" value="0">
                             <input type="hidden" id="unitPrice" name="unitPrice" value="<%= selectedCar.unitprice %>">
                             <input type="hidden" name="reservationDate" value="<%= reservationDate %>">
-                            <button type="submit">Reserve Car</button>
+                            <button class="book-now-button" type="submit">Reserve Car</button>
                         </form>
                     </div>
                 </div>

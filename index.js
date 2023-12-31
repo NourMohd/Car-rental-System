@@ -464,8 +464,8 @@ app.get('/admin-Register-car', isAdmin, (req, res) => {
 
 
 app.post('/admin-Register-car', isAdmin, (req, res) => {
-    const { model, year, plateid, unitprice,officeid } = req.body;
-    const status = 'Active';
+    const { model, year, plateid,status, unitprice,officeid } = req.body;
+    
 
     connection.query(
         'INSERT INTO cars (Model, Year, PlateID, Status, unitprice,office_id) VALUES (?, ?, ?, ?, ?, ?)',
@@ -483,6 +483,30 @@ app.post('/admin-Register-car', isAdmin, (req, res) => {
     );
 });
 
+app.get('/logout', (req, res) => {
+    res.render('login'); 
+});
+
+
+app.post('/logout', (req, res) => {
+    
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send('Server error');
+            return;
+        }
+        
+               res.redirect('/login');
+    });
+});
+app.get('/about-us', (req, res) => {
+    res.render('about-us'); 
+});
+
+app.get('/contact', (req, res) => {
+    res.render('contact'); 
+});
 
 
 app.listen(PORT, () => {
