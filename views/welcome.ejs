@@ -1,87 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="/images/favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
-    rel="stylesheet">
-
-  <title>Car Rental Website</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="/css/fontawesome.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <style>
-    /* Add this style block to your existing head section */
-    .book-now-button {
-      background-color: transparent;
-      color: black;
-      border: 2px solid red;
-      border-radius: 5px;
-      padding: 3px 15px;
-      /* Adjust padding as needed */
-      text-decoration: none;
-      display: inline-block;
-      font-size: 12px;
-      margin-top: 10px;
-      /* Adjust margin as needed */
-      cursor: pointer;
-    }
-  </style>
-
-</head>
-
-
-<body>
-  <!-- Header -->
-  <header class="">
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <h2>Car Rental <em>Website</em></h2>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-
-
-            <li class="nav-item"><a class="nav-link" href="/myreservations"> My Reservations</a></li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Log Out</a>
-            </li>
-            <!---alsearch hnaa!!!!-->
-        </div>
-    </nav>
-  </header>
-  <div class="page-heading about-heading header-text" style="background-image: url(/images/heading-6-1920x500.jpg)">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="text-content">
-            <h2>Available Cars</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
+<%- include("header") %>
 
   <div class="container-fluid">
     <div class="row">
@@ -138,10 +55,9 @@
               <button type="button" class="clearFilters">Clear</button>
             </div>
 
-
           </form>
-
         </div>
+
         <section class="products">
           <div class="container">
             <div class="row">
@@ -201,38 +117,32 @@
       </div>
     </div>
   </div>
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Additional Scripts -->
-  <script src="assets/js/custom.js"></script>
-  <script src="assets/js/owl.js"></script>
-</body>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const checkboxes = document.querySelectorAll('.yearFilter input[type="checkbox"]');
-    const priceInputs = document.querySelectorAll('.unitpriceFilter input[type="text"]');
 
-    // Function to clear checkboxes and price inputs
-    function clearFilters() {
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
+  <%- include("footer") %>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.yearFilter input[type="checkbox"]');
+        const priceInputs = document.querySelectorAll('.unitpriceFilter input[type="text"]');
+
+        // Function to clear checkboxes and price inputs
+        function clearFilters() {
+          checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+          });
+
+          priceInputs.forEach(input => {
+            input.value = '';
+          });
+
+          document.getElementById('filterForm').submit();
+        }
+
+
+        document.querySelector('.clearFilters').addEventListener('click', function () {
+          clearFilters();
+        });
       });
-
-      priceInputs.forEach(input => {
-        input.value = '';
-      });
-
-      document.getElementById('filterForm').submit(); // Submit the form after clearing
-    }
-
-    // Event listener for the Clear button
-    document.querySelector('.clearFilters').addEventListener('click', function () {
-      clearFilters();
-    });
-  });
-</script>
-
-</html>
+    </script>
