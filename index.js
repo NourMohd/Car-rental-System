@@ -607,17 +607,21 @@ app.post('/report3', (req, res) => {
     const specificDate = req.body.specificDate;
 
     let query = `
-    SELECT c.CarID, c.Status
-    FROM cars AS c 
-`;
+        SELECT c.*, 
+        CASE 
+            WHEN r.ReservationDate <= ? AND r.ReturnDate >= ? THEN 'Reserved'
+            ELSE c.status
+        END AS carStatus
+        FROM cars c
+        LEFT JOIN reservations r ON c.carID = r.carID
+    `;
 
+    const queryParams = [specificDate, specificDate];
 
-
-    const queryParams = [];
-
-    if (specificDate) {
-        // query += 'AND ? BETWEEN r.ReservationDate AND r.ReturnDate)';
-        queryParams.push(specificDate);
+    if (!specificDate) {
+        // If specificDate is not provided, handle the error or send an appropriate response
+        res.status(400).send('Specific date is required');
+        return;
     }
 
     connection.query(query, queryParams, (err, results) => {
@@ -634,8 +638,8 @@ app.post('/report3', (req, res) => {
         }
         res.render('admin-reports.ejs', renders);
     });
-
 });
+
 
 app.post('/report4', (req, res) => {
     const customerID = req.body.customerID;
