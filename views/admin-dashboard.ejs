@@ -1,51 +1,46 @@
 <%- include("admin-header") %>
 
-    <body>
-        <!-- cars table -->
-        <div class="container mt-5">
-            
-            <h1>Cars Status</h1>
-            <table border="1">
-                <thead>
+<body>
+    <!-- cars table -->
+    <div class="container mt-5">
+        
+        <h1>Cars Status</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                    <th>Update Status / Remove</th> <!-- Updated the header -->
+                </tr>
+            </thead>
+            <tbody>
+                <% carsList.forEach(car => { %>
                     <tr>
-                        <th>Car ID</th>
-                        <th>Model</th>
-                        <th>Status</th>
-                        <th>Update Status</th>
+                        <td><%= car.CarID %></td>
+                        <td><%= car.Model %></td>
+                        <td><%= car.Status %></td>
+                        <td>
+                            <form action="/update-status" method="post" style="display: inline;">
+                                <input type="hidden" name="CarID" value="<%= car.CarID %>">
+                                <select name="status">
+                                    <option value="<%= car.Status %>"><%= car.Status %></option>
+                                    <option value="Active">Active</option>
+                                    <option value="Reserved">Reserved</option>
+                                    <option value="Out of service">Out of Service</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                            <form action="/remove-car" method="post" style="display: inline;">
+                                <input type="hidden" name="CarID" value="<%= car.CarID %>">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <% carsList.forEach(car=> { %>
-                        <tr>
-                            <td>
-                                <%= car.CarID %>
-                            </td>
-                            <td>
-                                <%= car.Model %>
-                            </td>
-                            <td>
-                                <%= car.Status %>
-                            </td>
-                            <td>
-                                <form action="/update-status" method="post">
-                                    <input type="hidden" name="CarID" value="<%= car.CarID %>">
-                                    <select name="status">
-                                        <option value="<%= car.Status %>"><%= car.Status %></option>
-                                        <option value="Active">Active</option>
-                                        <option value="Reserved">Reserved</option>
-                                        <option value="Out of service">Out of Service</option>
-                                    </select>
-                                    <button type="submit">Update</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-        </div>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
 
-
-    </body>
-
-    </html>
+</html>

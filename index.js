@@ -429,6 +429,24 @@ function updateCarStatus(res, carID, newStatus) {
     );
 }
 
+
+app.post('/remove-car', (req, res) => {
+    const carID = req.body.CarID;
+
+   
+    connection.query('DELETE FROM cars WHERE CarID = ?', [carID], (err, results) => {
+        if (err) {
+            console.error('Error removing car:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+   
+        res.redirect('/admin-dashboard');    
+    });
+});
+
+
 app.get('/admin-search-form', (req, res) => {
     res.render('admin-search-form');
 });
@@ -610,6 +628,7 @@ app.post('/report3', (req, res) => {
         SELECT c.*, 
         CASE 
             WHEN r.ReservationDate <= ? AND r.ReturnDate >= ? THEN 'Reserved'
+            WHEN c.status = 'Reserved' or 'reserved' THEN 'Active'
             ELSE c.status
         END AS carStatus
         FROM cars c
