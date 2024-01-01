@@ -1,0 +1,64 @@
+<!-- Daily payments within specific period. -->
+
+<div>
+    <form action="/report5" method="post">
+        <h1>Report5</h1>
+        <label for="pickupDate">Pickup Date</label>
+        <input type="date" id="pickupDate" name="pickupDate">
+
+        <label for="returnDate">Return Date</label>
+        <input type="date" id="returnDate" name="returnDate">
+
+        <input type="submit">
+    </form>
+
+    <% if(locals.reports && reports.length> 0 && reportID === 5){ %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Reservation Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+                    <th>Customer ID</th>
+                    <th>Reservation Total price</th>
+                    <th>Payment method</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reports.forEach((report)=>{ %>
+                    <tr>
+                        <td>
+                            <%= report.ReservationID %>
+                        </td>
+                        <td>
+                            <%= report.ReservationDate.toLocaleDateString(undefined, { year: 'numeric' ,
+                                month: '2-digit' , day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.PickupDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.ReturnDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.CustomerID %>
+                        </td>
+                        <td>
+                            <%= report.totalprice %>
+                        </td>
+                        <td>
+                            <%= report.payment_method %>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+
+        <% }else{ %>
+            <p> No reservations available </p>
+            <% } %>
+
+</div>

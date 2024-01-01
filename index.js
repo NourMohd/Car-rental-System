@@ -38,8 +38,31 @@ app.set('view engine', 'ejs');
 
 // get request for home page
 app.get("/", async (req, res) => {
-    res.render("home.ejs");
+
+    connection.query(`
+      UPDATE cars c
+      JOIN (
+          SELECT CarID,
+                 CASE 
+                     WHEN ReturnDate < CURDATE() THEN 'Active' 
+                     ELSE 'Reserved' 
+                 END AS new_status
+          FROM reservations
+          WHERE ReturnDate < CURDATE()
+      ) r ON c.CarID = r.CarID
+      SET c.Status = r.new_status;
+    `, (error, results) => {
+        if (error) {
+            console.error('Error executing SQL query:', error);
+            return res.status(500).send('Internal Server Error');
+        }
+
+
+        res.render("home.ejs");
+    });
+
 });
+
 app.get('/login', (req, res) => {
     res.render('login');
 });
@@ -210,8 +233,8 @@ app.post('/reservation', (req, res) => {
 
     // // Save the reservation to the database
     connection.query(
-        'INSERT INTO Reservations (CustomerID, CarID, ReservationDate, PickupDate, ReturnDate, Status,totalprice,payment_method) VALUES (?, ?, CURDATE(), ?, ?, ?,?,?)',
-        [selectedCustomerId, selectedCarId, pickupDate, returnDate, status, totalprice, payment_method],
+        'INSERT INTO Reservations (CustomerID, CarID, ReservationDate, PickupDate, ReturnDate,totalprice,payment_method) VALUES (?, ?, CURDATE(), ?, ?,?,?)',
+        [selectedCustomerId, selectedCarId, pickupDate, returnDate, totalprice, payment_method],
         (err, results) => {
             if (err) {
                 console.error('Error reserving car:', err);
@@ -548,7 +571,7 @@ app.post('/report2', (req, res) => {
     SELECT c.*, r.*
     FROM reservations AS r 
     JOIN cars AS c ON r.CarID = c.CarID
-    WHERE 1=1
+    WHERE 1
 `;
 
 
@@ -580,10 +603,44 @@ app.post('/report2', (req, res) => {
 
 });
 
+app.post('/report3', (req, res) => {
+    const specificDate = req.body.specificDate;
+
+    let query = `
+    SELECT c.CarID, c.Status
+    FROM cars AS c 
+`;
+
+
+
+    const queryParams = [];
+
+    if (specificDate) {
+        // query += 'AND ? BETWEEN r.ReservationDate AND r.ReturnDate)';
+        queryParams.push(specificDate);
+    }
+
+    connection.query(query, queryParams, (err, results) => {
+        console.log(results);
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error fetching reports');
+            return;
+        }
+
+        const renders = {
+            reports: results,
+            reportID: 3
+        }
+        res.render('admin-reports.ejs', renders);
+    });
+
+});
+
 app.post('/report4', (req, res) => {
     const customerID = req.body.customerID;
 
-    var query  = `
+    var query = `
     SELECT r.*, cs.*, c.Model, c.PlateID 
     FROM reservations AS r 
     JOIN customers AS cs ON r.CustomerID = cs.CustomerID
@@ -592,12 +649,12 @@ app.post('/report4', (req, res) => {
     `;
 
     const queryParams = [];
-    if (customerID){
+    if (customerID) {
         query += ' AND r.CustomerID = ?';
-        queryParams.push(customerID); 
+        queryParams.push(customerID);
     }
 
-    connection.query(query, queryParams, (err, results)=>{
+    connection.query(query, queryParams, (err, results) => {
         if (err) {
             console.error('Error executing search query:', err);
             res.status(500).send('Error fetching reports');
@@ -609,6 +666,45 @@ app.post('/report4', (req, res) => {
         }
         res.render('admin-reports.ejs', renders);
     });
+});
+
+app.post('/report5', (req, res) => {
+    const pickupDate = req.body.pickupDate
+    const returnDate = req.body.returnDate;
+
+    let query = `
+    SELECT r.*
+    FROM reservations AS r
+    WHERE 1=1
+`;
+
+
+
+    const queryParams = [];
+    if (pickupDate) {
+        query += 'AND r.PickupDate >=  ?';
+        queryParams.push(pickupDate);
+    }
+    if (returnDate) {
+        query += 'AND r.ReturnDate <=  ?';
+        queryParams.push(returnDate);
+    }
+
+    connection.query(query, queryParams, (err, results) => {
+        console.log(results);
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error fetching reports');
+            return;
+        }
+
+        const renders = {
+            reports: results,
+            reportID: 5
+        }
+        res.render('admin-reports.ejs', renders);
+    });
+
 });
 
 

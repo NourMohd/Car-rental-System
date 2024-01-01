@@ -12,7 +12,7 @@
         <input type="submit">
     </form>
 
-    <% if(locals.reports && reports.length > 0 && reportID === 2){ %>
+     <% if(locals.reports && reports.length > 0 && reportID === 1){ %>
         <table border="1">
             <thead>
                 <tr>
@@ -25,6 +25,12 @@
                     <th>Year</th>
                     <th>PlateID</th>
                     <th>office_id</th>
+                    <th>Customer ID</th>
+                    <th>Customer First Name</th>
+                    <th>Customer Last Name</th>
+                    <th>Customer Email</th>
+                    <th>Customer Phone</th>
+                    <th>Customer Address</Address>
                     </th>
 
 
@@ -63,6 +69,24 @@
                         </td>
                         <td>
                             <%= report.office_id %>
+                        </td>
+                        <td>
+                            <%= report.CustomerID %>
+                        </td>
+                        <td>
+                            <%= report.FirstName %>
+                        </td>
+                        <td>
+                            <%= report.LastName %>
+                        </td>
+                        <td>
+                            <%= report.Email %>
+                        </td>
+                        <td>
+                            <%= report.Phone %>
+                        </td>
+                        <td>
+                            <%= report.Address %>
                         </td>
 
 

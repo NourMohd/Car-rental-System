@@ -1,16 +1,41 @@
 <!-- The status of all cars on a specific day. -->
 <div>
-    <form action="/report2" method="post">
-
-        <label for="pick-up-date">Pickup Date</label>
-        <input type="date" id="pickupDate">
-
-        <label for="return-date">Return Date</label>
-        <input type="date" id="returnDate">
+    <form action="/report3" method="post">
+        <h1>Report 3</h1>
+        <label for="specificDate">Put the Date</label>
+        <input type="date" id="specificDate" name="specificDate">
 
 
         <input type="submit">
     </form>
 
-    
+    <% if(locals.reports && reports.length > 0 && reportID === 3){ %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Status</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <% reports.forEach((report)=>{ %>
+                    <tr>
+                        <td>
+                            <%= report.CarID %>
+                        </td>
+                        <td>
+                            <%= report.Status %>
+                        </td>
+
+
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+
+        <% }else{ %>
+            <p> No reservations available </p>
+        <% } %>
 </div>
