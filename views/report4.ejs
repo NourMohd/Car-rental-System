@@ -1,0 +1,86 @@
+<!-- All reservations of specific customer including customer information, car model and plate id. -->
+<div>
+    <form action="/report4" method="post">
+        <h1>Report4</h1>
+        <label for="customerID">Customer ID</label>
+        <input type="text" id="customerID" name="customerID" placeholder="Customer ID">
+
+        <input type="submit">
+    </form>
+
+    <% if(locals.reports && reports.length > 0 && reportID === 4){ %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Reservation Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+                    <th>Model</th>
+                    <th>PlateID</th>
+                    <th>Customer ID</th>
+                    <th>Customer First Name</th>
+                    <th>Customer Last Name</th>
+                    <th>Customer Email</th>
+                    <th>Customer Phone</th>
+                    <th>Customer Address</Address>
+                    </th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <% reports.forEach((report)=>{ %>
+                    <tr>
+                        <td>
+                            <%= report.ReservationID %>
+                        </td>
+                        <td>
+                            <%= report.ReservationDate.toLocaleDateString(undefined, { year: 'numeric' ,
+                                month: '2-digit' , day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.PickupDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.ReturnDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.Model %>
+                        </td>
+                        <td>
+                            <%= report.PlateID %>
+                        </td>
+                        <td>
+                            <%= report.CustomerID %>
+                        </td>
+                        <td>
+                            <%= report.FirstName %>
+                        </td>
+                        <td>
+                            <%= report.LastName %>
+                        </td>
+                        <td>
+                            <%= report.Email %>
+                        </td>
+                        <td>
+                            <%= report.Phone %>
+                        </td>
+                        <td>
+                            <%= report.Address %>
+                        </td>
+
+
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+
+        <% }else{ %>
+            <p>No reservations available </p>
+        <% } %>
+    
+</div>

@@ -1,11 +1,15 @@
-INSERT INTO cars (CarID, model, year, PLateID, status, unitprice)
-VALUES
-    (1, 'Toyota Camry', 2022, 'ABC123', 'Active', 2200),
-    (2, 'Honda Accord', 2021, 'XYZ789', 'Out of Service', 2400),
-    (3, 'Ford Mustang', 2023, 'DEF456', 'Rented', 2500),
-    (4, 'Chevrolet Cruze', 2020, 'GHI789', 'Reserved', 2000),
-    (5, 'Nissan Altima', 2019, 'JKL012', 'Returned', 2100),
-    (6, 'BMW X5', 2022, 'MNO345', 'Unavailable', 2600);
+INSERT INTO cars (Model, Year, PlateID, Status,unitprice, office_id) 
+VALUES 
+('Toyota Camry', 2022, 'ABC1234', 'Active',80, 1),
+('Honda Civic', 2021, 'XYZ5678', 'Active',90, 2),
+('Ford Mustang', 2020, 'DEF9012', 'Active',100, 3),
+('Chevrolet Tahoe', 2019, 'GHI3456', 'Active',200, 4),
+('BMW 3 Series', 2021, 'JKL7890', 'Out of service',300, 5),
+('Audi A4', 2020, 'MNO1234', 'Active',350, 1),
+('Mercedes-Benz E-Class', 2022, 'PQR5678', 'Reserved',250, 2),
+('Jeep Wrangler', 2019, 'STU9012', 'Active',300, 3),
+('Tesla Model S', 2021, 'VWX3456', 'Out of service',280, 4),
+('Nissan Altima', 2020, 'YZA7890', 'Active',75 , 5);
 
     INSERT INTO Offices (location, contact_info) VALUES 
 ('123 Main St, New York, USA', 'Phone: +1-123-456-7890, Email: nyoffice@example.com'),

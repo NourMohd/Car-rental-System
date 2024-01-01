@@ -1,0 +1,77 @@
+<!-- All reservations of any car within a specified period including all car information. -->
+<div>
+
+    <form action="/report2" method="post">
+        <h1>Report2</h1>
+        <label for="pickupDate">Pickup Date</label>
+        <input type="date" id="pickupDate" name="pickupDate">
+
+        <label for="returnDate">Return Date</label>
+        <input type="date" id="returnDate" name="returnDate">
+
+        <input type="submit">
+    </form>
+
+    <% if(locals.reports && reports.length > 0 && reportID === 2){ %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Reservation Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+                    <th>Car ID</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>PlateID</th>
+                    <th>office_id</th>
+                    </th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <% reports.forEach((report)=>{ %>
+                    <tr>
+                        <td>
+                            <%= report.ReservationID %>
+                        </td>
+                        <td>
+                            <%= report.ReservationDate.toLocaleDateString(undefined, { year: 'numeric' ,
+                                month: '2-digit' , day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.PickupDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.ReturnDate.toLocaleDateString(undefined, { year: 'numeric' , month: '2-digit' ,
+                                day: '2-digit' }) %>
+                        </td>
+                        <td>
+                            <%= report.CarID %>
+                        </td>
+                        <td>
+                            <%= report.Model %>
+                        </td>
+                        <td>
+                            <%= report.Year %>
+                        </td>
+                        <td>
+                            <%= report.PlateID %>
+                        </td>
+                        <td>
+                            <%= report.office_id %>
+                        </td>
+
+
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+
+        <% }else{ %>
+            <p> No reservations available </p>
+        <% } %>
+</div>

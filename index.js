@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import mysql from "mysql2";
 import session from "express-session";
+import { render } from "ejs";
 
 
 const app = express();
@@ -40,7 +41,7 @@ app.get("/", async (req, res) => {
     res.render("home.ejs");
 });
 app.get('/login', (req, res) => {
-    res.render('login'); 
+    res.render('login');
 });
 
 
@@ -82,7 +83,7 @@ app.post('/login', (req, res) => {
             } else {
                 res.status(401).send('Invalid username or password');
             }
-            
+
         });
 
 
@@ -202,15 +203,15 @@ app.post('/reservation', (req, res) => {
     const pickupDate = req.body.pickupDate;
     const returnDate = req.body.returnDate;
     const status = 'Reserved';
-    const totalprice=req.body.totalprice;
-    const payment_method=req.body.payment_method;
-    
+    const totalprice = req.body.totalprice;
+    const payment_method = req.body.payment_method;
+
 
 
     // // Save the reservation to the database
     connection.query(
         'INSERT INTO Reservations (CustomerID, CarID, ReservationDate, PickupDate, ReturnDate, Status,totalprice,payment_method) VALUES (?, ?, CURDATE(), ?, ?, ?,?,?)',
-        [selectedCustomerId, selectedCarId, pickupDate, returnDate, status,totalprice,payment_method],
+        [selectedCustomerId, selectedCarId, pickupDate, returnDate, status, totalprice, payment_method],
         (err, results) => {
             if (err) {
                 console.error('Error reserving car:', err);
@@ -330,6 +331,14 @@ app.get('/dashboard', (req, res) => {
         });
 });
 
+app.get('/about-us', (req, res) => {
+    res.render('about-us');
+});
+
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
+
 // admin routes
 const isAdmin = (req, res, next) => {
     if (!req.session || !req.session.role || req.session.role !== 'admin') {
@@ -340,7 +349,7 @@ const isAdmin = (req, res, next) => {
 
 app.get('/admin-dashboard', isAdmin, (req, res) => {
     connection.query('SELECT * FROM cars', (err, cars) => {
-        if (err) { 
+        if (err) {
             res.status(500).send('Error fetching cars');
             return;
         }
@@ -349,7 +358,7 @@ app.get('/admin-dashboard', isAdmin, (req, res) => {
             carsList: cars
         };
 
-        res.render('admin-dashboard.ejs', renders);  
+        res.render('admin-dashboard.ejs', renders);
     });
 });
 
@@ -359,7 +368,7 @@ app.post('/update-status', (req, res) => {
     const carID = req.body.CarID;
     const newStatus = req.body.status;
 
-    
+
     if (newStatus === "Reserved") {
         connection.query(
             'DELETE FROM reservations WHERE CarID = ?',
@@ -370,12 +379,12 @@ app.post('/update-status', (req, res) => {
                     res.status(500).send('Error updating status');
                     return;
                 }
-                
+
                 updateCarStatus(res, carID, newStatus);
             }
         );
     } else {
-        
+
         updateCarStatus(res, carID, newStatus);
     }
 });
@@ -392,21 +401,22 @@ function updateCarStatus(res, carID, newStatus) {
                 res.status(500).send('Error updating status');
                 return;
             }
-            res.redirect('/admin-dashboard'); 
+            res.redirect('/admin-dashboard');
         }
     );
 }
 
 app.get('/admin-search-form', (req, res) => {
-    res.render('admin-search-form'); 
+    res.render('admin-search-form');
 });
 
 app.post('/adminsearch', (req, res) => {
     const carID = req.body.carID;
     const lastName = req.body.lastName;
     const reservationDate = req.body.reservationDate;
+    console.log(reservationDate);
 
- 
+
     let query = `
     SELECT cars.*, offices.* , customers.*, reservations.* 
     FROM cars 
@@ -433,7 +443,7 @@ app.post('/adminsearch', (req, res) => {
         queryParams.push(reservationDate);
     }
 
- 
+
     connection.query(query, queryParams, (err, results) => {
         if (err) {
             console.error('Error executing search query:', err);
@@ -441,7 +451,7 @@ app.post('/adminsearch', (req, res) => {
             return;
         }
 
-     
+
         res.render('admin-search-results.ejs', { searchResults: results });
     });
 });
@@ -464,49 +474,162 @@ app.get('/admin-Register-car', isAdmin, (req, res) => {
 
 
 app.post('/admin-Register-car', isAdmin, (req, res) => {
-    const { model, year, plateid,status, unitprice,officeid } = req.body;
-    
+    const { model, year, plateid, status, unitprice, officeid } = req.body;
+
 
     connection.query(
         'INSERT INTO cars (Model, Year, PlateID, Status, unitprice,office_id) VALUES (?, ?, ?, ?, ?, ?)',
-        [model, year, plateid, status,unitprice ,officeid],
+        [model, year, plateid, status, unitprice, officeid],
         (err, results) => {
             if (err) {
                 console.error('Error registering new car:', err);
                 res.status(500).send('Error registering new car');
                 return;
             }
-            
-           
+
+
             res.redirect('/admin-dashboard');
         }
     );
 });
 
+
+app.get('/admin-reports', (req, res) => {
+    res.render('admin-reports.ejs');
+});
+
+
+app.post('/report1', (req, res) => {
+    const pickupDate = req.body.pickupDate
+    const returnDate = req.body.returnDate;
+
+    let query = `
+    SELECT c.*, cs.*, r.*
+    FROM reservations AS r 
+    JOIN cars AS c ON r.CarID = c.CarID
+    JOIN customers AS cs ON r.CustomerID = cs.CustomerID
+    WHERE 1=1
+`;
+
+
+
+    const queryParams = [];
+    if (pickupDate) {
+        query += 'AND r.PickupDate >=  ?';
+        queryParams.push(pickupDate);
+    }
+    if (returnDate) {
+        query += 'AND r.ReturnDate <=  ?';
+        queryParams.push(returnDate);
+    }
+
+    connection.query(query, queryParams, (err, results) => {
+        console.log(results);
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error fetching reports');
+            return;
+        }
+
+        const renders = {
+            reports: results,
+            reportID: 1
+        }
+        res.render('admin-reports.ejs', renders);
+    });
+
+});
+
+app.post('/report2', (req, res) => {
+    const pickupDate = req.body.pickupDate
+    const returnDate = req.body.returnDate;
+
+    let query = `
+    SELECT c.*, r.*
+    FROM reservations AS r 
+    JOIN cars AS c ON r.CarID = c.CarID
+    WHERE 1=1
+`;
+
+
+
+    const queryParams = [];
+    if (pickupDate) {
+        query += 'AND r.PickupDate >=  ?';
+        queryParams.push(pickupDate);
+    }
+    if (returnDate) {
+        query += 'AND r.ReturnDate <=  ?';
+        queryParams.push(returnDate);
+    }
+
+    connection.query(query, queryParams, (err, results) => {
+        console.log(results);
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error fetching reports');
+            return;
+        }
+
+        const renders = {
+            reports: results,
+            reportID: 2
+        }
+        res.render('admin-reports.ejs', renders);
+    });
+
+});
+
+app.post('/report4', (req, res) => {
+    const customerID = req.body.customerID;
+
+    var query  = `
+    SELECT r.*, cs.*, c.Model, c.PlateID 
+    FROM reservations AS r 
+    JOIN customers AS cs ON r.CustomerID = cs.CustomerID
+    JOIN cars as c ON r.CarID = c.CarID
+    WHERE 1
+    `;
+
+    const queryParams = [];
+    if (customerID){
+        query += ' AND r.CustomerID = ?';
+        queryParams.push(customerID); 
+    }
+
+    connection.query(query, queryParams, (err, results)=>{
+        if (err) {
+            console.error('Error executing search query:', err);
+            res.status(500).send('Error fetching reports');
+            return;
+        }
+        const renders = {
+            reports: results,
+            reportID: 4
+        }
+        res.render('admin-reports.ejs', renders);
+    });
+});
+
+
 app.get('/logout', (req, res) => {
-    res.render('login'); 
+    res.render('login');
 });
 
 
 app.post('/logout', (req, res) => {
-    
+
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
             res.status(500).send('Server error');
             return;
         }
-        
-               res.redirect('/login');
+
+        res.redirect('/login');
     });
 });
-app.get('/about-us', (req, res) => {
-    res.render('about-us'); 
-});
 
-app.get('/contact', (req, res) => {
-    res.render('contact'); 
-});
 
 
 app.listen(PORT, () => {
